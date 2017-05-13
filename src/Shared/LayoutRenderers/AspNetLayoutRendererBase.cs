@@ -19,22 +19,10 @@ namespace NLog.Web.LayoutRenderers
     public abstract class AspNetLayoutRendererBase : LayoutRenderer
     {
         /// <summary>
-        /// Initializes the <see cref="AspNetLayoutRendererBase" />.
-        /// </summary>
-        protected AspNetLayoutRendererBase()
-        {
-#if !ASP_NET_CORE
-            HttpContextAccessor = new DefaultHttpContextAccessor();
-#endif
-        }
-
-
-#if ASP_NET_CORE
-
-        /// <summary>
         /// Context for DI
         /// </summary>
         private IHttpContextAccessor _httpContextAccessor;
+
 
         /// <summary>
         /// Provides access to the current request HttpContext.
@@ -46,6 +34,13 @@ namespace NLog.Web.LayoutRenderers
             get => _httpContextAccessor ?? (_httpContextAccessor = RetrieveHttpContextAccessor());
             set => _httpContextAccessor = value;
         }
+
+#if !ASP_NET_CORE
+
+        internal static IHttpContextAccessor DefaultHttpContextAccessor { get; set; } = new DefaultHttpContextAccessor();
+
+        private static IHttpContextAccessor RetrieveHttpContextAccessor() => DefaultHttpContextAccessor;
+#else
 
         private static IHttpContextAccessor RetrieveHttpContextAccessor()
         {
@@ -73,12 +68,7 @@ namespace NLog.Web.LayoutRenderers
             }
         }
 
-#else
-        /// <summary>
-        /// Provides access to the current request HttpContext.
-        /// </summary>
-        [NLog.Config.NLogConfigurationIgnorePropertyAttribute]
-        public IHttpContextAccessor HttpContextAccessor { get; set; }
+
 
 #endif
 
@@ -122,5 +112,19 @@ namespace NLog.Web.LayoutRenderers
             base.CloseLayoutRenderer();
         }
 #endif
+
+
+        /// <summary>
+        /// Register a custom layout renderer with a callback function <paramref name="func" />. The callback recieves the logEvent and the current configuration.
+        /// </summary>
+        /// <param name="name">Name of the layout renderer - without ${}.</param>
+        /// <param name="func">Callback that returns the value for the layout renderer.</param>
+        public static void Register(string name, Func<LogEventInfo, IHttpContextAccessor, LoggingConfiguration, object> func)
+        {
+            object Func2(LogEventInfo logEventInfo, LoggingConfiguration configuration) => func(logEventInfo, RetrieveHttpContextAccessor(), configuration);
+
+            Register(name, Func2);
+        }
     }
 }
+
