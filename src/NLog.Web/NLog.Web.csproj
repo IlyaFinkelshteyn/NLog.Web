@@ -21,6 +21,7 @@ For ASP.NET Core: Check https://www.nuget.org/packages/NLog.Web.AspNetCore </Des
     </PackageReleaseNotes>
     <PackageTags>nlog log target layoutrenderer web asp.net httpcontext</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugType>pdbonly</DebugType>
