@@ -22,6 +22,8 @@ skip_tags: true
 
 install:
 - nuget restore src\NLog.Web\NLog.Web.csproj -verbosity quiet
+- nuget restore src\NLog.Web.AspNetCore\NLog.Web.AspNetCore.csproj -verbosity quiet
+
 #- appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/v4.7.3/nuget.exe
 
 build_script:
