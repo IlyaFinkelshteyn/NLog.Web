@@ -5,7 +5,7 @@ set nuget_version=1.0.0
 
 call :read_params %*
 
-nuget restore NLog.Web.sln -verbosity quiet
+msbuild NLog.Web.sln /t:restore /verbosity:minimal
 msbuild NLog.Web.sln /verbosity:minimal /t:rebuild /p:configuration=release
 IF ERRORLEVEL 1 EXIT /B 1
 nuget pack src\NLog.Web\NLog.Web.csproj -properties Configuration=Release;Platform=AnyCPU -version %nuget_version%
