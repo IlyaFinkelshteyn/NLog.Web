@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net35</TargetFramework>
+    <TargetFramework>net451</TargetFramework>
     <AssemblyTitle>NLog.Web</AssemblyTitle>
     <Product>NLog.Web</Product>
     <Description>Extend NLog with targets and layout renderers for websites and web applications.
