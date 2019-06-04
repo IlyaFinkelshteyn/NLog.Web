@@ -20,6 +20,9 @@ build:
   
 skip_tags: true
 
+install:
+- nuget update -self
+
 build_script:
 - ps: |
     $versionPrefix = "4.8.2"
